@@ -24,11 +24,11 @@ double dt = 0.1;
 //
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
-const double weight_cte = 80000;
-const double weight_epsi = 80000;
+const double weight_cte = 8000;
+const double weight_epsi = 8000;
 const double weight_delta = 80;
 const double weight_throttle = 80;
-const double weight_delta_seq = 8000;
+const double weight_delta_seq = 800;;
 const double weight_throttle_seq = 10;
 
 // Both the reference cross track and orientation errors are 0.
