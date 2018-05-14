@@ -24,16 +24,17 @@ double dt = 0.1;
 //
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
-const double weight_cte = 8000;
-const double weight_epsi = 8000;
-const double weight_delta = 80;
-const double weight_throttle = 80;
-const double weight_delta_seq = 800;;
-const double weight_throttle_seq = 10;
+const double weight_cte = 2000.0;
+const double weight_epsi = 2000.0;
+const double weight_delta = 20;
+const double weight_throttle = 20;
+const double weight_delta_seq = 200000;
+const double weight_throttle_seq = 80000;
 
 // Both the reference cross track and orientation errors are 0.
-// The reference velocity is set to 40 mph.
-double ref_v = 40;
+// The reference velocity is set to 40 mph converted to m/s.
+double ref_v = 90 * 0.44704;
+//double ref_v = 40; 
 
 // The solver takes all the state variables and actuator
 // variables in a singular vector. Thus, we should to establish
@@ -119,8 +120,8 @@ class FG_eval {
       AD<double> delta0 = vars[delta_start + t - 1];
       AD<double> a0 = vars[a_start + t - 1];
 
-      AD<double> f0 = coeffs[0] + coeffs[1] * x0;
-      AD<double> psides0 = CppAD::atan(coeffs[1]);
+      AD<double> f0 = coeffs[0] + coeffs[1] * x0 + coeffs[2] * CppAD::pow(x0, 2)  + coeffs[3] * CppAD::pow(x0, 3);;
+      AD<double> psides0 = CppAD::atan(coeffs[1] + 2 * coeffs[2] * x0 + 3 * coeffs[3] * CppAD::pow(x0, 2));
 
       // Here's `x` to get you started.
       // The idea here is to constraint this value to be 0.
@@ -220,6 +221,7 @@ vector<double> MPC::Solve(Eigen::VectorXd x0, Eigen::VectorXd coeffs) {
     constraints_lowerbound[i] = 0;
     constraints_upperbound[i] = 0;
   }
+
   constraints_lowerbound[x_start] = x;
   constraints_lowerbound[y_start] = y;
   constraints_lowerbound[psi_start] = psi;

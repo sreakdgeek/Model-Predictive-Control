@@ -91,7 +91,9 @@ int main() {
           double px = j[1]["x"];
           double py = j[1]["y"];
           double psi = j[1]["psi"];
-          double v = j[1]["speed"];
+          double v_mph = j[1]["speed"]; 
+	  double v = v_mph * 0.44704; // v in m/s.
+	  //double v = v_mph;
 	  double steering = j[1]["steering_angle"];
           double throttle  = j[1]["throttle"];
 
@@ -157,7 +159,7 @@ int main() {
 
 	  // Step # 5: Update the steering and throttle values.
 
-          double steer_value = mpc_result[0] / (deg2rad(25) * Lf);
+          double steer_value = mpc_result[0] / (deg2rad(25));
           double throttle_value = mpc_result[1];
 
 	  std::cout << "DEBUG: steer_value = " << steer_value << std::endl;
